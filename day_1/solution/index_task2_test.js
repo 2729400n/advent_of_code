@@ -1,23 +1,3 @@
-
-
-
-// acquire from your cookie 
-// found using web inspector and network tab
-// or document.cookie in the console tab 
-sessionID="" 
-
-let req = new Request(
-    "https://adventofcode.com/2024/day/1/input",
-    {
-        headers:{
-            Cookie:`session=${sessionID};`
-        }
-    }
-),
-jsonify = /(?<=[0-9])\s+(?=[0-9])/;
-
-
-
 function chechSimilarity(value) {
     try {
         value = "[" + value.replaceAll(/(?<=[0-9])\s+(?=[0-9])/g, ",") + "]"
@@ -42,8 +22,6 @@ function chechSimilarity(value) {
     } catch (e) {
         throw e
     }
-
-
 }
 
 chechSimilarity(
