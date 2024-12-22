@@ -35,5 +35,3 @@ let data = await receieve(1)
 console.log(chechSimilarity(
     data
 ))
-
-// 30659356

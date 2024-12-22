@@ -33,5 +33,4 @@ chechSimilarity(
 3   9
 3   3
 `)
-// 30659356
 
