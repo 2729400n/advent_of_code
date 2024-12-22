@@ -1,6 +1,7 @@
 import receieve from "../../utils/recieve_submit.mjs"
 
 function checkDifference(inputString) {
+    // pre-Declare value so its not lost in try scope
     let value;
     try {
         value = JSON.parse("[" + inputString.replaceAll(/(?<=[0-9])\s+(?=[0-9])/g, ",") + "]");
@@ -17,8 +18,13 @@ function checkDifference(inputString) {
         left.push(elem)
         right.push(elem1)
     }
+    // sort both arrays
     left.sort()
     right.sort()
+
+    // create and array that aggregates the 
+    // inner absolute difference 
+    // of left and right 
     return left.map((val,index)=>Math.abs(val-right[index])).reduce((lv,rv)=>(lv+rv))
 }
 
