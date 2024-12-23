@@ -1,6 +1,6 @@
 import receieve from "../../utils/recieve_submit.mjs"
 
-function chechSimilarity(inputString) {
+function checkSimilarity(inputString) {
     let value;
     try {
         value = JSON.parse("[" + inputString.replaceAll(/(?<=[0-9])\s+(?=[0-9])/g, ",") + "]");
@@ -29,7 +29,8 @@ function chechSimilarity(inputString) {
     return outSimil
 
 }
+
 let data = await receieve(1)
-console.log(chechSimilarity(
+console.log(checkSimilarity(
     data
 ))
