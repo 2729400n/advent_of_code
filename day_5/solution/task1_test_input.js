@@ -1,11 +1,12 @@
 "use strict";
 function createDisk(stream) {
     let blocks = [];
-    let index = 0
+    let index = 0;
     for (let i = 0; i < stream.length; i += 2) {
         let [len, pad] = [...stream.substring(i, i + 2).split("")].map((val) => (val && Number.parseInt(val) || 0));
-        blocks.push({ id: Math.floor(i / 2), padding: pad, size: len, startIndex:index});
-        index+=len+pad
+        pad = pad || 0;
+        blocks.push({ id: Math.floor(i / 2), padding: pad, size: len, startIndex: index, paddingStart: index + len });
+        index += pad + len;
     }
     let disk = "";
     for (const element of blocks) {
@@ -13,14 +14,21 @@ function createDisk(stream) {
     }
     let elemStart = 0;
     let count = 0;
-    debugger
     for (let fowardIndex, backIndex = 1; backIndex <= blocks.length; backIndex++) {
         const backElem = blocks[blocks.length - backIndex];
+        if (backIndex == elemStart) {
+            break;
+        }
+        if (backElem.size == 0) {
+            continue;
+        }
         for (fowardIndex = elemStart; fowardIndex < blocks.length; fowardIndex++) {
             const fowardElem = blocks[fowardIndex];
             let n = fowardElem.startIndex + fowardElem.size - 1, k = fowardElem.startIndex - 1;
-            debugger
             count += (((n * (n + 1)) - (k * (k + 1))) / 2) * fowardElem.id;
+            debugger;
+            fowardElem.size = 0;
+            // console.log(`${fowardElem.id}*{${k+1} ... ${n}}`);
             // if we have exhausted our all of gaps
             // we no longer need to do anything
             if (fowardElem.id == backElem.id) {
@@ -29,12 +37,14 @@ function createDisk(stream) {
             // if the currElem has a bigger size than gap then we shall fill gap with gap size
             // else fill with current elem size  
             let size = Math.min((fowardElem.padding || 0), backElem.size);
+            // update sizes to reflect changes
             backElem.size -= size;
             fowardElem.padding = (fowardElem.padding || 0) - size;
-            n += size;
-            k += size;
-            debugger
-            count += (((n * (n + 1)) - (k * (k + 1))) / 2) * fowardElem.id;
+            n = fowardElem.paddingStart + size - 1;
+            k = fowardElem.paddingStart - 1;
+            fowardElem.paddingStart += size;
+            // console.log(`${backElem.id}*{${k+1} ... ${n}}`);
+            count += (((n * (n + 1)) - (k * (k + 1))) / 2) * backElem.id;
             if (fowardElem.padding == 0) {
                 elemStart;
             }
@@ -42,14 +52,14 @@ function createDisk(stream) {
             if (backElem.size == 0) {
                 break;
             }
+            debugger;
         }
+        debugger;
         elemStart = fowardIndex;
     }
-    debugger
     return count;
 }
-let dat = `1234`.trim().replaceAll(/\r/g, "");
-console.log(createDisk(dat));
-debugger;
-//use this then reduce the value till you get zero
-//
+{
+    let dat = `12345`.trim().replaceAll(/\r/g, "");
+    console.log(createDisk(dat));
+}

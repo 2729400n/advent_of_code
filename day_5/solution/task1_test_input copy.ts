@@ -1,5 +1,5 @@
 "use strict";
-
+{
 interface Block {
     id: number;
     padding?: number;
@@ -37,7 +37,7 @@ function createDisk(stream:string) {
             count += (((n * (n + 1)) - (k * (k + 1))) / 2) * fowardElem.id;
             debugger
             fowardElem.size = 0;
-            // console.log(`${fowardElem.id}*{${k+1} ... ${n}}`);
+            console.log(`${fowardElem.id}*{${k+1} ... ${n}}`);
             
             // if we have exhausted our all of gaps
             // we no longer need to do anything
@@ -55,7 +55,7 @@ function createDisk(stream:string) {
             k = fowardElem.paddingStart-1;
             fowardElem.paddingStart += size;
             
-            // console.log(`${backElem.id}*{${k+1} ... ${n}}`);
+            console.log(`${backElem.id}*{${k+1} ... ${n}}`);
             
             count += (((n * (n + 1)) - (k * (k + 1))) / 2) * backElem.id;
             if (fowardElem.padding == 0) {
@@ -82,3 +82,4 @@ console.log(createDisk(dat));
 // 022111222
 //60 =2*((2*(2+1)))/2 +1*((5*(5+1))-(2*(2+1)))/2+2*((8*(8+1))-(5*(5+1)))/2
 // algorithim is sound for js
+}

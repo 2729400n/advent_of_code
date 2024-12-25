@@ -1,10 +1,11 @@
 
-import {sessionID } from "./session.js"
+import {sessionID}  from "./session.mjs"
 
 /*
 Recieve the input using the fetch api
 */
 async function receieve(level) {
+
     let req = new Request(
         `https://adventofcode.com/2024/day/${level}/input`,
         {
@@ -15,8 +16,8 @@ async function receieve(level) {
         }
     )
     let resp = await fetch(req)
-    resp = await resp.text()
-    return resp
+    let txt = await resp.text()
+    return txt
 }
 
 /*

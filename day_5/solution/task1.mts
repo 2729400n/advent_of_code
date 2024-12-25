@@ -1,5 +1,5 @@
 "use strict";
-
+import recieve from "../../utils/recieve_submit.mjs";
 interface Block {
     id: number;
     padding?: number;
@@ -75,7 +75,7 @@ function createDisk(stream:string) {
 
 
 {
-let dat = `12345`.trim().replaceAll(/\r/g, "");
+let dat = (await recieve(5)).trim().replaceAll(/\r/g, "");
 console.log(createDisk(dat));
 }
 //use this then reduce the value till you get zero

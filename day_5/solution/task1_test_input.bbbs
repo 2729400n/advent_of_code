@@ -1,19 +1,10 @@
 "use strict";
-
-interface Block {
-    id: number;
-    padding?: number;
-    size: number;
-    startIndex:number
-    paddingStart:number
-}
-
-function createDisk(stream:string) {
-    let blocks: Block[] = [];
+function createDisk(stream) {
+    let blocks = [];
     let index = 0;
     for (let i = 0; i < stream.length; i += 2) {
         let [len, pad] = [...stream.substring(i, i + 2).split("")].map((val) => (val && Number.parseInt(val) || 0));
-        pad=pad||0
+        pad = pad || 0;
         blocks.push({ id: Math.floor(i / 2), padding: pad, size: len, startIndex: index, paddingStart: index + len });
         index += pad + len;
     }
@@ -25,20 +16,20 @@ function createDisk(stream:string) {
     let count = 0;
     for (let fowardIndex, backIndex = 1; backIndex <= blocks.length; backIndex++) {
         const backElem = blocks[blocks.length - backIndex];
-        if(backIndex==elemStart){
-            break
+        if (backIndex == elemStart) {
+            break;
         }
-        if(backElem.size==0){
-            continue
+        if (backElem.size == 0) {
+            continue;
         }
         for (fowardIndex = elemStart; fowardIndex < blocks.length; fowardIndex++) {
             const fowardElem = blocks[fowardIndex];
             let n = fowardElem.startIndex + fowardElem.size - 1, k = fowardElem.startIndex - 1;
             count += (((n * (n + 1)) - (k * (k + 1))) / 2) * fowardElem.id;
-            debugger
+            debugger;
             fowardElem.size = 0;
-            // console.log(`${fowardElem.id}*{${k+1} ... ${n}}`);
-            
+            console.log(`${fowardElem.id}*{${k + 1} ... ${n}}`);
+            debugger;
             // if we have exhausted our all of gaps
             // we no longer need to do anything
             if (fowardElem.id == backElem.id) {
@@ -49,14 +40,14 @@ function createDisk(stream:string) {
             let size = Math.min((fowardElem.padding || 0), backElem.size);
             // update sizes to reflect changes
             backElem.size -= size;
-            
+            debugger;
             fowardElem.padding = (fowardElem.padding || 0) - size;
-            n = fowardElem.paddingStart + size-1;
-            k = fowardElem.paddingStart-1;
+            n = fowardElem.paddingStart + size - 1;
+            k = fowardElem.paddingStart - 1;
             fowardElem.paddingStart += size;
-            
-            // console.log(`${backElem.id}*{${k+1} ... ${n}}`);
-            
+            debugger;
+            console.log(`${backElem.id}*{${k + 1} ... ${n}}`);
+            debugger;
             count += (((n * (n + 1)) - (k * (k + 1))) / 2) * backElem.id;
             if (fowardElem.padding == 0) {
                 elemStart;
@@ -65,20 +56,16 @@ function createDisk(stream:string) {
             if (backElem.size == 0) {
                 break;
             }
-            debugger
+            debugger;
         }
-        debugger
+        debugger;
         elemStart = fowardIndex;
     }
     return count;
 }
-
-
-{
-let dat = `12345`.trim().replaceAll(/\r/g, "");
+let dat = `1234`.trim().replaceAll(/\r/g, "");
 console.log(createDisk(dat));
-}
+debugger;
 //use this then reduce the value till you get zero
-// 022111222
 //60 =2*((2*(2+1)))/2 +1*((5*(5+1))-(2*(2+1)))/2+2*((8*(8+1))-(5*(5+1)))/2
 // algorithim is sound for js

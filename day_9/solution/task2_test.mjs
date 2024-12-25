@@ -85,7 +85,7 @@ function createDisk(stream = "") {
     return count;
 }
 
-let dat = (await receieve(9)).replaceAll(/\D/g, "");
+let dat = (`2333133121414131402`).replaceAll(/\D/g, "");
 console.log(dat.substring(dat.length-7,dat.length))
 console.log(createDisk(dat));
 
